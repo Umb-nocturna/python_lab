@@ -289,7 +289,9 @@ def proyectos(request):
 [Template Free proyecto](https://startbootstrap.com/theme/personal)
 
 
+
 #### Django - Folders Structur Guide Lines
+![Alt text](https://github.com/Umb-nocturna/python_lab/blob/main/2-django_basic/structure_files_django_example.png "a title")
 
 my_project/
 │
