@@ -1,3 +1,7 @@
+<!---
+Last Update : Feb 10 /2025
+-->
+
 ### CAP 1: Install Django
 
 1. Instalar la libreria desde pip
@@ -29,202 +33,83 @@
 
 > Conclusión: Django instalado en nuestro entorno de desarrollo.
 
-### CAP 2: Django templating
-
-1. Crear folder "/templates" dentro de proyecto
-
-2. En el "settings.py" se configura rutas para que se usen desde el proyecto asi:
-
-3. Importo la libreria 
-    ```
-    import os
-    ```
-
-4. Configuro la variable global "SETTINGS_PATH" asi:
-
-    ```
-    SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
-    ```
-
-5. Configuro la ruta del template, asi:    
-    ```
-    - - TEMPLATES
-        "DIRS": [ os.path.join(SETTINGS_PATH, 'templates'),],
-    ```
-6. Vamos a llamar nuestro primer template.
-
-7. **[[ ENTENDIMIENTO DE TEORIA EL PATRON MVT ]]**
-
-8. inicio por crear la ruta. en "urls.py", agrego:
-    ```
-    path("inicio/", inicio),
-    ```
-9. Creo la vista a nivel del proyecto en "views.py", si el archivo no existe se debe crear.
-
-10. Dentro de "views.py" inserto el codigo:
-    ```
-    from django.shortcuts import render
-
-    def inicio(request):
-        """Retorna gestion pagina de inicio"""
-        return render(request,"pages/inicio.html",{})
-    ```
-11. En "urls.py" debo instanciar la clase que renderiza el Template, Como en este caso estamos 
-    construyendo el template desde el mismo proyecto, se instancia con el (.), asi:
-    ```
-    from .views import inicio
-    ```
-12. Ahora creo mi archivo HTML en la carpeta que especifique. Coloco algo de HTML para ver que es mi pagina.
 
 
-> Conclusión: Se tiene en "templates/pages" las paginas de cada seccion de forma convencional SIN jerarquia de templates.*
+### CAP 2: Super User (Admin)
 
+8. Vamos a crear un super usuario para acceder al administrador, asi:
 
-#### CAP3: AHORA, JERARQUIA DE TEMPLATES:
-
-1. **[[ ENTENDIMIENTO DE LA JERARQUIA DE TEMPLATES ]]**
-
-2. Creamos los subfolders dentro de la carpeta "/templates" entre ellos "/layouts" y "/includes"
-
-3. Vamos a crear la plantilla del "template", Dentro de "layouts.html" creamos el archivo "base.html"
-
-4. Basicamente dentro de "base.html" vamos a crear 3 espacios dinamicos:
-    ```
-    {% block title %} {% endblock %}
-    ```
-    ```
-    {% include "includes/header.html" %}
-    ```
-    ```
-    {% block content %}  {% endblock %}
-    ```
-
-    ::: warning
-    *block, se utiliza para definir áreas reemplazables en una plantilla base que las plantillas hijas pueden sobrescribir. Está relacionado con la herencia de plantillas.
-    include, se utiliza para insertar el contenido de una plantilla dentro de otra, permitiendo la reutilización de fragmentos de código quen no cambian.*
-    :::
-
-5. Crear dentro de "/templates/includes/" el archivo "header.html".
-
-6. Ahora, se trabaja en la plantilla hija. inicialmente se trabajara desde "/pages/inicio1.html"
-
-7. Primero, se define que esta plantilla depende una plantilla padre, asi:
-    ```
-    {% extends "layouts/base.html" %}
-    ```
-8. Luego definimos los "block" con la informacion dinamica, asi
-    ```
-    {% block title %} << titulo de la pagina >> {% endblock %}
-    {% block content %} << contenido de la pagina >> {% endblock %}
-    ```
-
-#### CAP4: INTEGRANDO CSS Y JS
-
-0. Hacer el ajuste de las carpetas del proyecto. Por buenas practicas deben quedar como en **(Django - Folders Structure Guide Lines)** y entonces se debe ajustar la ruta del "templates" asi:
-
-    ```
-    "DIRS": [os.path.join(BASE_DIR, 'templates'),],
-    ```
-
-1. Primero configuramos el acceso a los archivos "static".
-
-2. En el archico 'settings.py', configuramos asi:
-
-    ```
-    STATIC_URL = '/static/'
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, '<miproyecto>/static'), )
-    ```
-3. En cada template donde voy a hacer uso de archivos estaticos, debo configurar la variable asi;
-
-    ```
-    {% load static %}
-    ```
-
-4. La forma de llamar los archivos desde 'static/' es :
-
-    ```
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-    <img class="profile-img" src="{% static 'assets/profile.png' %}" alt="..." />
-    ```
-
-[[CHALLENGE]]: Incluir una hoja de css custom y una de js custom 
-
-
-5. Para efectos del ejercicio en clase. Vamos a integrar un template que existe en el mercado, basado en Boostrap. [Template Free proyecto](https://startbootstrap.com/theme/personal)
-
-6. Descargamos el template y vamos a explorar su codigo HTML.
-
-7. ...Waiting...
-
-8. Entendamos un poco [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
-
-9. Algunos ejemplos: [Bootstrap-Examples](https://getbootstrap.com/docs/4.0/examples/)
-
-10. ...Waiting...
-
-11. Tomamos de ejemplo una de las paginas del "template". EJ:index.html
-
-12. Separamos sus componentes en: Header, Footer, Content.
-
-13. Y los cluimos en los bloques del "Template" que corresponda.
-
-#### CAP5: PRIMERA APP - PROYECTOS
-
-1. Vamos a crear un super usuario para acceder al administrador, asi:
-
-2. En el terminal con el siguiente comando :
+9. En el terminal con el siguiente comando :
 
     ```
     python manage.py createsuperuser
     ```
 
-3. Luego creamos nuestra aplicacion para el proyectos, En este caso es la app de proyectos, asi:
+10. Asignamos un "usuario", "email" y un "password"
 
-4. ir a la carpeta "apps/" y dentro de esta ejecutar el comando:
+11. Activamos de nuevo el Server y probamos las credenciales
+
+
+
+### CAP 3: PRIMERA APP - fotos
+
+12. Luego creamos nuestra aplicacion para nuestro proyecto, En este caso es la app de "fotos", asi:
+
+13. Crear la carpeta que contendra todas las aplicaciones que compondran nuestro proyecto "apps/".
+
+14. ir a la carpeta "apps/" y dentro de esta ejecutar el comando:
 
     ```
-    django-admin startapp <nombre-app>
+    django-admin startapp <nombre-app> //linux
+    python -m django startapp <nombre-app>  //win
     ```
 
-5. Aparecera dentro de nuestra carpeta "Aplicaciones/<nueva-app>/" con los archivos de python.
+15. Aparecera dentro de nuestra carpeta "apps/<nueva-app>/" con los archivos de python.
 
-6. Agregamos la nueva app al archivo de configuracion del proyecto, asi:
+16. Registramos la nueva app al archivo de configuracion del proyecto, asi:
  
     ```
-    "Aplicaciones.proyectos",
+    'apps.fotos',
     ```
 
-7. Ahora en el archivo "apps.py" de mi aplicacion, configuramos el nombre de la aplicacion, asi:
+17. Ahora en el archivo "apps.py" de mi aplicacion, configuramos el nombre de la aplicacion para indicar que esta dentro de la carpeta "apps/", asi:
 
     ```
-    class ProyectosConfig(AppConfig):
-        default_auto_field = "django.db.models.BigAutoField"
-        name = "Aplicaciones.proyectos"
-    ```
-
-8. Dentro de nuesta aplicacion, vamos al archivo "models.py", alli, declaramos la estructura que 
-   tendra el objeto Proyecto en la Base de datos. Por ahora vamos a definir 4 campos (Codigo, nombre, descripcion y publish).
+    class FotosConfig(AppConfig):
+        default_auto_field = 'django.db.models.BigAutoField'
+        name = 'apps.fotos'
 
     ```
-    class Proyecto(models.Model):
-        codigo = models.CharField(primary_key=True,max_length=4)
+
+18. Dentro de nuestra aplicacion, vamos al archivo "models.py", alli, declaramos la estructura que 
+   tendra el objeto "fotos" en la Base de datos. Por ahora vamos a definir 4 campos (name, descripcion y publish).
+
+    ```
+    from django.db import models
+
+    class Mifoto(models.Model):
         nombre = models.CharField(max_length=90)
         descripcion = models.CharField( max_length=2000 )
+        imageurl = models.CharField(max_length=120)
         publish = models.BooleanField(default=True)
+        date = models.DateTimeField(auto_now=True)
+        
+        def __str__(self):
+            return self.nombre
     ```
 
 
-9. Ahora vamos al archivo "admin.py", aqui le decimos Django que este modelo se va a administrar 
+19. Ahora vamos al archivo "admin.py", aqui le decimos Django que este modelo se va a administrar 
    desde su interfaz. asi:
 
     ```
-   from .models import Proyecto  
+    from .models import Mifoto 
 
-   admin.site.register(Proyecto)
+    admin.site.register(Mifoto)
     
     ```
 
-10. Ahora en la consola ejecutamos el comando, 
+20. Ahora en la consola ejecutamos el comando, 
     ```
     python manage.py migrate
     ```
@@ -238,56 +123,82 @@
     python manage.py migrate
     ```
 
-11. Ahora, vamos a crear la pagina "proyectos.html" pero desde la nueva Aplicacion "proyectos/templates" 
-y no desde el "template" principal.
+21. Verificar desde la interfaz de administracion de Django, si la entidad existe e insertar unos registros de prueba.
 
 
-12. Para ello primero generamos las urls desde "proyectos/urls.py"
+
+### CAP 4: PRIMER TEMPLATE y VIEW - Pagina album
+(Prerequisito: Teoria MVT, Templating)
+
+22. Crear el folder "/templates" dentro de la app, en este caso dentro de "/apps/fotos/"
+
+23. Dentro del folder "apps/fotos/templates" crear el archivo "album.html". Puedes colocar tu codigo HTML o usar este de ejemplo
+
+```
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Álbum de Fotos</title>
+        <style>
+            body { font-family: Arial, sans-serif; text-align: center; }
+            .gallery { display: flex; flex-wrap: wrap; justify-content: center; }
+            .photo { margin: 10px; padding: 10px; border: 1px solid #ccc; width: 200px; }
+            img { width: 100%; height: auto; }
+        </style>
+    </head>
+    <body>
+        <h1>Álbum de Fotos</h1>
+        <div class="gallery">
+            {% for foto in fotos %}
+                <div class="photo">
+                    <img src="{{ foto.imagen.url }}" alt="{{ foto.nombre }}">
+                    <h3>{{ foto.nombre }}</h3>
+                    <p>{{ foto.descripcion }}</p>
+                </div>
+            {% empty %}
+                <p>No hay fotos disponibles.</p>
+            {% endfor %}
+        </div>
+    </body>
+    </html>
+```
+
+24. Creamos la VIEW. Ahora vamos a generar la lista de fotos. Dentro de "views.py" de mi Aplicacion:
+
+```
+from .models import Mifoto
+
+def album(request):
+    fotos = Mifoto.objects.all()
+    return render(request, "album.html", {"fotos": fotos})
+```
+Genero la consulta por medio del ORM, y lo envio como variable a "album.html"
 
 
-``` 
+25. Ahora le decimos al sistema de URLS del proyecto, que necesitamos tener una url "/album/" que renderizara el html "album.html".
+Si aún no tienes un archivo "apps/fotos/urls.py", créalo y añade:
+
+```
 from django.urls import path
-from . import views
+from .views import album
 
-urlpatterns = [ 
-    path("proyectos/", views.proyectos, name="Proyectos"),
+urlpatterns = [
+    path('album/', album, name='album'),
 ]
-``` 
+```
+Se debe importar la view de nuestra app "fotos".
 
-y le decimos al archivo de urls del proyecto, que ahora tambien vamos a tener urls dentro de 
-una Aplicacion, asi:
+
+26. Luego le dicimos al sistema general del proyecto de URLS, que desde la app "/apps/fotos/urls.py" se han definido unas "url´s"
 
 ```
 from django.urls import path, include
-
-+ path("", include('Aplicaciones.proyectos.urls')),  
+    ...
+    + path('fotos/', include('apps.fotos.urls')),  # Incluye las rutas de la app fotos
+    ...
 ```
-
-13. Ahora voy a generar la lista de cursos. Dentro de "views.py" de mi Aplicacion, importo el modelo,
-
-```
-from .models import Proyecto
-```
-
-Genero la consulta por medio del ORM, y lo envio como variable al "template/proyectos.html"
-
-```
-def proyectos(request):
-    mis_proyectos = Proyecto.objects.all()
-    return render(request,"pages/proyectos.html",{"proyectos":mis_proyectos})
-```    
-
-14. **[[ ENTENDIMIENTO DE QUE ES UN ORM ]]**
-
-15. Ahora ajusto la plantilla "templates/proyecto.html" para que itere, y muestre los proyectos.
-
-16. **[[ ENTENDIMIENTO DE QUE ES JINJA2 ]]**
-
-
-
-#### Resources.
-[Template Free proyecto](https://startbootstrap.com/theme/personal)
-
 
 
 #### Django - Folders Structur Guide Lines
