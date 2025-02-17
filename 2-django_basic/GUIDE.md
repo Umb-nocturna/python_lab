@@ -1,6 +1,8 @@
 <!---
-Last Update : Feb 10 /2025
+Last Update : Feb 16 /2025
 -->
+
+## GUIA DJANGO
 
 ### CAP 1: Install Django
 
@@ -113,7 +115,7 @@ Last Update : Feb 10 /2025
     ```
     python manage.py migrate
     ```
-    Si no presenta errores, ejecutamos el siguiente:
+    Si no presenta errores, ejecutamos el siguiente comando:
     ```
     python manage.py makemigrations
     ```  
@@ -127,12 +129,14 @@ Last Update : Feb 10 /2025
 
 
 
-### CAP 4: PRIMER TEMPLATE y VIEW - Pagina album
+### CAP 4: PRIMER TEMPLATE - Pagina index desde el template del proyecto
 (Prerequisito: Teoria MVT, Templating)
 
-22. Crear el folder "/templates" dentro de la app, en este caso dentro de "/apps/fotos/"
+22. Crear el folder "/templates" dentro del proyecto.
 
-23. Dentro del folder "apps/fotos/templates" crear el archivo "album.html". Puedes colocar tu codigo HTML o usar este de ejemplo
+23. Dentro del folder "/templates" creamos "/layouts","/pages","/includes"
+
+24. Dentro del folder "/templates/layouts" crear el archivo "base.html" y ponga el siguiente codigo como ejemplo.
 
 ```
     <!DOCTYPE html>
@@ -140,58 +144,123 @@ Last Update : Feb 10 /2025
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Álbum de Fotos</title>
-        <style>
-            body { font-family: Arial, sans-serif; text-align: center; }
-            .gallery { display: flex; flex-wrap: wrap; justify-content: center; }
-            .photo { margin: 10px; padding: 10px; border: 1px solid #ccc; width: 200px; }
-            img { width: 100%; height: auto; }
-        </style>
+        <title>{% block title %} {% endblock %}</title>
+        <!--<link rel="stylesheet" href="/static/styles.css">-->
     </head>
     <body>
-        <h1>Álbum de Fotos</h1>
-        <div class="gallery">
-            {% for foto in fotos %}
-                <div class="photo">
-                    <img src="{{ foto.imagen.url }}" alt="{{ foto.nombre }}">
-                    <h3>{{ foto.nombre }}</h3>
-                    <p>{{ foto.descripcion }}</p>
-                </div>
-            {% empty %}
-                <p>No hay fotos disponibles.</p>
-            {% endfor %}
-        </div>
+        <header>
+            <h1>Mi Proyecto</h1>
+            <nav>
+                <a href="/">Inicio</a>
+                <a href="/admin/">Admin</a>
+            </nav>
+        </header>
+
+        <main>
+            {% block content %}
+
+            {% endblock %}
+        </main>
+
+        <footer>
+            <p>&copy; 2025 - Todos los derechos reservados.</p>
+        </footer>
     </body>
     </html>
-```
-
-24. Creamos la VIEW. Ahora vamos a generar la lista de fotos. Dentro de "views.py" de mi Aplicacion:
 
 ```
-from .models import Mifoto
 
-def album(request):
-    fotos = Mifoto.objects.all()
-    return render(request, "album.html", {"fotos": fotos})
-```
-Genero la consulta por medio del ORM, y lo envio como variable a "album.html"
-
-
-25. Ahora le decimos al sistema de URLS del proyecto, que necesitamos tener una url "/album/" que renderizara el html "album.html".
-Si aún no tienes un archivo "apps/fotos/urls.py", créalo y añade:
+25. Dentro del folder "/templates/pages" crear el archivo "index.html" y ponga el siguiente codigo de ejemplo.
 
 ```
-from django.urls import path
-from .views import album
+    {% extends "layouts/base.html" %}
 
-urlpatterns = [
-    path('album/', album, name='album'),
-]
+    {% block title %}Title from index.html {% endblock %}
+
+    {% block content %}
+    <h2>Conenido de index.html</h2>
+    <p>Esta es la página de inicio.</p>
+    {% endblock %}
 ```
-Se debe importar la view de nuestra app "fotos".
+
+26. Dentro del archivo "settings.py", agregamos a la variable TEMPLATES, lo siguiente:
+
+```
+    ...
+    'DIRS': [os.path.join(BASE_DIR, "album/templates")],
+    ...
+```
+
+26. Creamos el archivo "views.py" dentro del proyecto si no existe. Agregamos el siguiente codigo, para crear la view del index
+
+```
+    from django.shortcuts import render
+
+    def inicio(request):
+        return render(request,"pages/index.html",{})
+```
+
+27. Luego, agregamos dentro del archivo "urls.py" del proyecto la nueva vista.
+
+```
+from .views import inicio
+```
+Agregamos tambien la url del index dentro de urlpatterns:
+
+```
+    ...
+    path('', inicio, name="inicio"),
+    ...
+```
+
+28. Subimos el servidor y probamos la nueva pagina de index:
+
+```
+http://127.0.0.1:8000/
+```
 
 
-26. Luego le dicimos al sistema general del proyecto de URLS, que desde la app "/apps/fotos/urls.py" se han definido unas "url´s"
+### CAP 4.1: PRIMER TEMPLATE - Modularización del template a header y footer
+
+29. Se procede a segmentar el codgo html correspondiente a cada una de estas areas( header, footer) del Front del proyecto.
+
+30. Se embeben en el archivo "/templates/layouts/base.html" asi :
+
+```
+    {% include "includes/header.html" %}
+
+    {% include "includes/footer.html" %}
+```
+
+
+### CAP 4.2: PRIMER TEMPLATE - Agregando nueva seccion desde una APP
+
+31. El ejemplo se realizara sobre el proyecto del "album", en la aplicacion "fotos".
+
+32. Se crea la vista que traera todos los registros de las fotos en "views.py". Se genera la consulta por medio del ORM, y se envio como variable a "fotos.html"
+
+```
+    from .models import Mifoto
+
+    # Create your views here.
+    def fotos(request):
+        mis_fotos = Mifoto.objects.all()
+        return render(request,"pages/fotos.html",{"fotos":mis_fotos})
+```
+Nota: a. Verificar que el archivo "fotos.html" existe dentro de la carpeta "/templates" dentro de la aplicacion. b. Tener en cuenta que la variable que envia el arreglo de registros hacia el template es la variable "fotos" en este ejemplo.
+
+33. Dentro del archivo "urls.py" de la aplicacion definiremos la url para esta pantalla, en este caso la llamaremos "/visor"
+
+```
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [ 
+        path("visor", views.fotos, name="fotos"),
+    ]
+```
+
+34. En el archivo "urls.py" del proyecto
 
 ```
 from django.urls import path, include
@@ -199,6 +268,37 @@ from django.urls import path, include
     + path('fotos/', include('apps.fotos.urls')),  # Incluye las rutas de la app fotos
     ...
 ```
+
+35. En el archivo del template de la aplicacion "/fotos/templates/pages/fotos.html". 
+Se define como un archivo que depende de un template base, se itera la variable fotos con los registros a mostrar.
+
+
+```
+    {% extends "layouts/base.html" %}
+
+    {% block title %}Mis fotos{% endblock %}
+
+    {% block content %}
+        <h1>Álbum de Fotos</h1>
+        <div class="gallery">
+            {% for foto in fotos %}
+                <div class="photo">
+                    <img src="{{ foto.imageurl }}" alt="{{ foto.nombre }}">
+                    <h3>{{ foto.nombre }}</h3>
+                    <p>{{ foto.descripcion }}</p>
+                </div>
+            {% empty %}
+                <p>No hay fotos disponibles.</p>
+            {% endfor %}
+        </div>
+    {% endblock %}   
+```
+
+36. Subimos el servidor y probamos.
+
+
+
+## RECURSOS
 
 
 #### Django - Folders Structur Guide Lines
