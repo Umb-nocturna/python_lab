@@ -1,10 +1,54 @@
 <!---
-Last Update : Feb 26 /2025
+Last Update : Marzo 16 /2025
 -->
 
 ## GUIA FASTAPI
 
-### CAP 1: API BASICO
+### CAP 0: INSTALL
+
+1. Se instala la libreria de FastAPI
+´´´
+    pip install fastapi 
+´´´
+
+2. Se instala la libreria del servidor uvicorn. Es un servidor de tipo ASGI (Asynchronous Server Gateway Interface)
+´´´
+pip install 'uvicorn[standard]'
+
+o
+
+pip install uvicorn
+
+´´´
+
+3. Crea archivo main.py para trabajar
+
+´´´
+from typing import Union
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+´´´
+
+4. Para ejecutar el proyecto se usa:
+
+´´´
+mac
+    uvicorn main:app --reload
+
+win
+    python -m uvicorn main:app --reload
+
+´´´
+
+### CAP 1: IMPLEMENTANDO API BASICO DESDE HTML - QRCODE
 
 1. Se instanciara un api basico, Documentacion:
     ```
@@ -70,13 +114,13 @@ Last Update : Feb 26 /2025
 
 ### CAP 2: API BASICO con Respuesta en JSON
 
-6. Se instanciara un API, que retorna un JSON. Se usara de ejemplo el api de Dragon Ball. Documentacion:
+1. Se instanciara un API, que retorna un JSON. Se usara de ejemplo el api de Dragon Ball. Documentacion:
 
 ```
 https://web.dragonball-api.com/documentation?ref=freepublicapis.com
 ```
 
-7. Crear el HTML para ver la implementacion: 
+2. Crear el HTML para ver la implementacion: 
 
     ```
     <!DOCTYPE html>
@@ -96,7 +140,7 @@ https://web.dragonball-api.com/documentation?ref=freepublicapis.com
 
     ```
 
-8. Script en JS que llama al api y trae la informacion:
+3. Script en JS que llama al api y trae la informacion:
 
     ```
      <script>
@@ -125,7 +169,7 @@ https://web.dragonball-api.com/documentation?ref=freepublicapis.com
         </script>
     ```
 
-9. Se ajustan los Styles para que se vea mejor:
+4. Se ajustan los Styles para que se vea mejor:
     ```
     <style>
         body {
@@ -154,4 +198,64 @@ https://web.dragonball-api.com/documentation?ref=freepublicapis.com
 
     ```
 
-10. Se hace la prueba de la implementacion.
+5. Se hace la prueba de la implementacion.
+
+
+### 3. Creando una Calculadora desde FastApi
+
+1. Crear el endpoint
+
+´´´
+//Code example en archivo '/fastapi-lab/getstart/example.py'
+
+´´´
+
+2. Implementarla desde HTML
+´´´
+//Code example en archivo '/demos-html/demo-fastapi-calculadora/example.html'
+
+´´´
+
+
+
+
+
+## 📂 Estructura del Proyecto FastAPI
+
+📦 my_fastapi_project
+├── 📂 app
+│   ├── 📂 routes
+│   │   ├── item_routes.py
+│   │   ├── user_routes.py
+│   │   ├── __init__.py
+│   ├── 📂 schemas
+│   │   ├── item_schema.py
+│   │   ├── user_schema.py
+│   │   ├── __init__.py
+│   ├── 📂 services
+│   │   ├── item_service.py
+│   │   ├── user_service.py
+│   │   ├── __init__.py
+│   ├── 📂 models
+│   │   ├── item_model.py
+│   │   ├── user_model.py
+│   │   ├── __init__.py
+│   ├── 📂 db
+│   │   ├── database.py
+│   │   ├── __init__.py
+│   ├── main.py
+│   ├── config.py
+│   ├── __init__.py
+├── 📂 tests
+│   ├── test_items.py
+│   ├── test_users.py
+│   ├── __init__.py
+├── 📂 docs
+│   ├── API_Documentation.md
+├── 📜 .env
+├── 📜 .gitignore
+├── 📜 requirements.txt
+├── 📜 README.md
+├── 📜 start.sh
+├── 📜 Dockerfile
+
