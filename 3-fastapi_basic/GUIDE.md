@@ -221,7 +221,7 @@ https://web.dragonball-api.com/documentation?ref=freepublicapis.com
 
 
 ## 📂 Estructura del Proyecto FastAPI
-![Alt text](https://github.com/Umb-nocturna/python_lab/blob/main/2-django_basic/fastapi-folders.png "a title")
+![Alt text](https://github.com/Umb-nocturna/python_lab/blob/main/3-fastapi_basic/fastapi-folders.png?raw=true "a title")
 
 📦 my_fastapi_project
 ├── 📂 app
