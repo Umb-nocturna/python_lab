@@ -221,6 +221,7 @@ https://web.dragonball-api.com/documentation?ref=freepublicapis.com
 
 
 ## 📂 Estructura del Proyecto FastAPI
+![Alt text](https://github.com/Umb-nocturna/python_lab/blob/main/2-django_basic/fastapi-folders.png "a title")
 
 📦 my_fastapi_project
 ├── 📂 app
@@ -250,12 +251,9 @@ https://web.dragonball-api.com/documentation?ref=freepublicapis.com
 │   ├── test_items.py
 │   ├── test_users.py
 │   ├── __init__.py
-├── 📂 docs
-│   ├── API_Documentation.md
 ├── 📜 .env
 ├── 📜 .gitignore
 ├── 📜 requirements.txt
 ├── 📜 README.md
-├── 📜 start.sh
-├── 📜 Dockerfile
+
 
