@@ -7,7 +7,7 @@ router = APIRouter()
 #Start api is available
 @router.get("/productos-start/")
 def start_productos():
-    return {"message": "Welcome to productos services"}
+    return {"message": "Welcome to productos services into de global API"}
 
 #Get all products
 @router.get("/productos", response_model=list)
